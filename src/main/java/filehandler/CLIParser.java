@@ -19,7 +19,7 @@ public class CLIParser {
         log.setRequired(true);
         options.addOption(log);
 
-        Option model = new Option("m", "model", true, "Filename of the pre-trained GloVe model");
+        Option model = new Option("m", "filemodel", true, "Filename of the pre-trained GloVe model");
         model.setRequired(true);
         options.addOption(model);
 
@@ -33,7 +33,7 @@ public class CLIParser {
         CommandLine cmd = parser.parse(options, args);
 
         logFilePath = cmd.getOptionValue("log");
-        modelFilePath = cmd.getOptionValue("model");
+        modelFilePath = cmd.getOptionValue("filemodel");
 
         String threads = cmd.getOptionValue("threads");
         numThreads = threads != null ? Integer.parseInt(threads) : DEFAULT_THREAD_COUNT;
