@@ -8,6 +8,7 @@ import filemodel.Log;
 import filemodel.Model;
 import org.apache.commons.cli.ParseException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class LogSimplifier {
@@ -40,7 +41,7 @@ public class LogSimplifier {
         try {
             LogReader lr = new LogReader();
             log = lr.readLog(logFile);
-        } catch (InvalidLogException e) {
+        } catch (InvalidLogException | FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
 
@@ -48,7 +49,7 @@ public class LogSimplifier {
         try {
             ModelReader mr = new ModelReader();
             model = mr.readModel(modelFile);
-        } catch (ModelReadingException e) {
+        } catch (ModelReadingException | FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
 

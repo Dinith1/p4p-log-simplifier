@@ -12,7 +12,7 @@ public enum ResourcePath {
         folderPath = path;
     }
 
-    public String getValue() {
+    public String path() {
         return folderPath;
     }
 }

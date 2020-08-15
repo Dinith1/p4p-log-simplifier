@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 public class FileChecker {
 
     public void checkLogExists(String log) throws FileNotFoundException {
-        checkExists(ResourcePath.RAW_LOG_FOLDER_PATH + log);
+        checkExists(ResourcePath.RAW_LOG_FOLDER_PATH.path() + log);
     }
 
     public void checkModelExists(String model) throws FileNotFoundException {
-        checkExists(ResourcePath.MODEL_FOLDER_PATH + model);
+        checkExists(ResourcePath.MODEL_FOLDER_PATH.path() + model);
     }
 
     public boolean checkModelObjExists(String model) {
