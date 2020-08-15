@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 
 public class LogSimplifier {
 
+    // TODO: Refactor and put separate parts into different methods
     public static void main(String[] args) {
         CLIParser parser = new CLIParser();
 
@@ -43,6 +44,7 @@ public class LogSimplifier {
             log = lr.readLog(logFile);
         } catch (InvalidLogException | FileNotFoundException e) {
             System.err.println(e.getMessage());
+            System.exit(1);
         }
 
         Model model;
@@ -51,10 +53,11 @@ public class LogSimplifier {
             model = mr.readModel(modelFile);
         } catch (ModelReadingException | FileNotFoundException e) {
             System.err.println(e.getMessage());
+            System.exit(1);
         }
 
-        System.out.println(parser.getLogFilePath());
-        System.out.println(parser.getModelFilePath());
-        System.out.println(parser.getNumThreads());
+        // TODO: Produce simplified log from the log, using the model
+
+        // TODO: Save the simplified log to a CSV file
     }
 }
