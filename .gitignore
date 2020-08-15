@@ -1,0 +1,15 @@
+.idea/
+target/
+*.iml
+
+# Pre-trained GloVe models
+/src/main/resources/trained_vectors/embeddings/*
+!/src/main/resources/trained_vectors/embeddings/README.md
+
+# Pre-trained GloVe models as serialized objects
+/src/main/resources/trained_vectors/java_obj/*
+!/src/main/resources/trained_vectors/java_obj/README.md
+
+# Processed logs
+/src/main/resources/logs/processed/*
+!/src/main/resources/logs/processed/README.md
