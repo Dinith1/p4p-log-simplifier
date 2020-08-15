@@ -1,7 +1,11 @@
+package filehandler;
+
 import org.apache.commons.cli.*;
 
 
 public class CLIParser {
+    private final int DEFAULT_THREAD_COUNT = 1;
+
     private Options options = new Options();
     private CommandLineParser parser = new DefaultParser();
     private HelpFormatter formatter = new HelpFormatter();
@@ -30,7 +34,10 @@ public class CLIParser {
 
         logFilePath = cmd.getOptionValue("log");
         modelFilePath = cmd.getOptionValue("model");
-        numThreads = Integer.parseInt(cmd.getOptionValue("threads"));
+
+        String threads = cmd.getOptionValue("threads");
+        numThreads = threads != null ? Integer.parseInt(threads) : DEFAULT_THREAD_COUNT;
+
     }
 
     public String getLogFilePath() {
