@@ -10,6 +10,7 @@ import java.io.IOException;
 public class LogReader {
 
     public Log readLog(String log) throws InvalidLogException {
+        System.out.println("Reading log...");
         String path = ResourcePath.RAW_LOG_FOLDER_PATH.path() + log;
 
         // TODO: OPTIMIZE THIS LOOP!?!?
