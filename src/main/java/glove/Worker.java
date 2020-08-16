@@ -2,6 +2,7 @@ package glove;
 
 import filemodel.Log;
 import filemodel.Model;
+import filemodel.VectorMath;
 
 public class Worker implements Runnable {
     private final int threadNum;
@@ -30,7 +31,16 @@ public class Worker implements Runnable {
 
             processedLog.putSingleValue(rawLog.getValue("Start time", i), "Start time", i);
             processedLog.putSingleValue(rawLog.getValue("End time", i), "End time", i);
-            processedLog.putSingleValue("testActivity123", "Activity", i);
+
+            // 'Algorithm' for finding the desired output Activity
+            double[] place = gloveModel.getWordVector(rawLog.getValue("Place", i).toLowerCase());
+            double[] action = gloveModel.getWordVector("action");
+            double[] vector = VectorMath.add(place, action, gloveModel.getDimension());
+
+            String[] closestWords = gloveModel.findClosestWords(vector, 5);
+            String newWord = closestWords[0];
+
+            processedLog.putSingleValue(newWord, "Activity", i);
         }
     }
 }

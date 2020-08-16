@@ -1,6 +1,8 @@
 package filemodel;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,19 +11,20 @@ public class Model implements Serializable {
 
     private final String name; // Name of the model file - without an extension
     private final int dimension;
-    private final Map<String, float[]> vectors = new HashMap<>();
+    private final Map<String, double[]> vectors = new HashMap<>();
 
     public Model(String name, int dimension) {
         this.name = name.substring(0, name.lastIndexOf('.'));
         this.dimension = dimension;
     }
 
-    public void addWordVector(String word, float[] vector) {
+    public void addWordVector(String word, double[] vector) {
         vectors.put(word, vector);
     }
 
-    public float[] getWordVector(String word) {
-        return vectors.get(word);
+    public double[] getWordVector(String word) {
+        double[] vec = vectors.get(word);
+        return vec;
     }
 
     public String getName() {
@@ -36,4 +39,32 @@ public class Model implements Serializable {
         return vectors.size();
     }
 
+    public String[] findClosestWords(double[] vector, int num) {
+        Object[][] topDistanceAndWord = new Object[num][2];
+
+        for (int i = 0; i < num; i++) {
+            topDistanceAndWord[i][0] = Double.MAX_VALUE;
+        }
+
+        for (String word : vectors.keySet()) {
+            double[] wordVec = vectors.get(word);
+            double euclideanDistance = VectorMath.euclideanDistance(vector, wordVec, dimension);
+
+            if (euclideanDistance < (double) topDistanceAndWord[num - 1][0]) {
+                topDistanceAndWord[num - 1][0] = euclideanDistance;
+                topDistanceAndWord[num - 1][1] = word;
+
+                Arrays.sort(topDistanceAndWord, Comparator.comparingDouble(o -> (double) o[0]));
+            }
+        }
+
+        String[] topWords = new String[num];
+
+        for (int i = 0; i < num; i++) {
+            topWords[i] = (String) topDistanceAndWord[i][1];
+        }
+
+        return topWords;
+    }
+    
 }

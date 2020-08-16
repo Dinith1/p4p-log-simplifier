@@ -54,7 +54,7 @@ public class ModelReader {
             int dimension = wordAndVector.length - 1;
 
             Model modelObj = new Model(model, dimension);
-            float[] vector = parseVector(Arrays.copyOfRange(wordAndVector, 1, dimension + 1), dimension);
+            double[] vector = parseVector(Arrays.copyOfRange(wordAndVector, 1, dimension + 1), dimension);
             modelObj.addWordVector(wordAndVector[0], vector);
 
             while ((line = br.readLine()) != null) {
@@ -78,11 +78,11 @@ public class ModelReader {
         }
     }
 
-    private float[] parseVector(String[] strVec, int dimension) {
-        float[] vector = new float[dimension];
+    private double[] parseVector(String[] strVec, int dimension) {
+        double[] vector = new double[dimension];
 
         for (int i = 0; i < dimension; i++) {
-            vector[i] = Float.parseFloat(strVec[i]);
+            vector[i] = Double.parseDouble(strVec[i]);
         }
 
         return vector;

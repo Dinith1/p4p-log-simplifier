@@ -51,14 +51,11 @@ public class LogSimplifier {
 
             System.out.println(Arrays.toString(simplifiedLog.getColumn("Activity")));
 
+            // TODO: Save the simplified log to a CSV file
+
         } catch (InvalidLogException | ModelReadingException | FileNotFoundException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-
-
-        // TODO: Produce simplified log from the log, using the model
-
-        // TODO: Save the simplified log to a CSV file
     }
 }
