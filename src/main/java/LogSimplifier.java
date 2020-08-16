@@ -6,6 +6,7 @@ import filehandler.LogReader;
 import filehandler.ModelReader;
 import filemodel.Log;
 import filemodel.Model;
+import glove.LogProcessor;
 import org.apache.commons.cli.ParseException;
 
 import java.io.FileNotFoundException;
@@ -38,18 +39,17 @@ public class LogSimplifier {
             System.exit(1);
         }
 
-        Log log;
-        Model model;
-
         try {
             LogReader lr = new LogReader();
-            log = lr.readLog(logFile);
+            Log log = lr.readLog(logFile);
 
             ModelReader mr = new ModelReader();
-            model = mr.readModel(modelFile);
+            Model model = mr.readModel(modelFile);
 
-            System.out.println("THIS MANY WORDS: " + model.getNumWords());
-            System.out.println(Arrays.toString(model.getWordVector("dog")));
+            LogProcessor lp = new LogProcessor();
+            Log simplifiedLog = lp.process(log, model, parser.getNumThreads());
+
+            System.out.println(Arrays.toString(simplifiedLog.getColumn("Activity")));
 
         } catch (InvalidLogException | ModelReadingException | FileNotFoundException e) {
             System.err.println(e.getMessage());

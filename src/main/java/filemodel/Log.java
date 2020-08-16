@@ -37,4 +37,16 @@ public class Log {
     public void putSingleValue(String value, String header, int row) {
         data.get(header)[row] = value;
     }
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public String[] getColumn(String header) {
+        return data.get(header);
+    }
+
+    public String getValue(String header, int row) {
+        return data.get(header)[row];
+    }
 }
