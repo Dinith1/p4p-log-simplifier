@@ -14,8 +14,15 @@ public class FileChecker {
     }
 
     public boolean checkModelObjExists(String model) {
-        // TODO: IMPLEMENT
-        return false;
+        String modelObj = model.substring(0, model.lastIndexOf('.')) + ".ser";
+
+        try {
+            checkExists(ResourcePath.MODEL_OBJ_FOLDER_PATH.path() + modelObj);
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+
+        return true;
     }
 
     private void checkExists(String path) throws FileNotFoundException {

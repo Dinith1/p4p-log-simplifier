@@ -8,8 +8,8 @@ import filemodel.Log;
 import filemodel.Model;
 import org.apache.commons.cli.ParseException;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class LogSimplifier {
 
@@ -39,22 +39,23 @@ public class LogSimplifier {
         }
 
         Log log;
+        Model model;
+
         try {
             LogReader lr = new LogReader();
             log = lr.readLog(logFile);
-        } catch (InvalidLogException | FileNotFoundException e) {
+
+            ModelReader mr = new ModelReader();
+            model = mr.readModel(modelFile);
+
+            System.out.println("THIS MANY WORDS: " + model.getNumWords());
+            System.out.println(Arrays.toString(model.getWordVector("dog")));
+
+        } catch (InvalidLogException | ModelReadingException | FileNotFoundException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
 
-        Model model;
-        try {
-            ModelReader mr = new ModelReader();
-            model = mr.readModel(modelFile);
-        } catch (ModelReadingException | FileNotFoundException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
 
         // TODO: Produce simplified log from the log, using the model
 
