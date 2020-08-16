@@ -1,9 +1,6 @@
 import exceptions.InvalidLogException;
 import exceptions.ModelReadingException;
-import filehandler.CLIParser;
-import filehandler.FileChecker;
-import filehandler.LogReader;
-import filehandler.ModelReader;
+import filehandler.*;
 import filemodel.Log;
 import filemodel.Model;
 import glove.LogProcessor;
@@ -51,9 +48,13 @@ public class LogSimplifier {
 
             System.out.println(Arrays.toString(simplifiedLog.getColumn("Activity")));
 
-            // TODO: Save the simplified log to a CSV file
+            LogWriter lw = new LogWriter();
+            String logName = logFile.substring(0, logFile.lastIndexOf('.'));
+            String modelName = model.getName();
 
-        } catch (InvalidLogException | ModelReadingException | FileNotFoundException e) {
+            lw.writeLog(simplifiedLog, logName, modelName);
+
+        } catch (InvalidLogException | ModelReadingException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }

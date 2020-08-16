@@ -4,13 +4,12 @@ import exceptions.InvalidLogException;
 import filemodel.Log;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class LogReader {
 
-    public Log readLog(String log) throws InvalidLogException, FileNotFoundException {
+    public Log readLog(String log) throws InvalidLogException {
         String path = ResourcePath.RAW_LOG_FOLDER_PATH.path() + log;
 
         // TODO: OPTIMIZE THIS LOOP!?!?
