@@ -4,7 +4,10 @@ import filemodel.Log;
 import filemodel.Model;
 import filemodel.VectorMath;
 
-public class Worker implements Runnable {
+/**
+ *
+ */
+public class LogWorker implements Runnable {
     private final int threadNum;
     private final int fromRow;
     private final int toRow;
@@ -13,7 +16,7 @@ public class Worker implements Runnable {
     private final Model gloveModel;
 
 
-    public Worker(int thread, int from, int to, Log log, Log newLog, Model model) {
+    public LogWorker(int thread, int from, int to, Log log, Log newLog, Model model) {
         this.threadNum = thread;
         fromRow = from;
         toRow = to;
@@ -32,15 +35,26 @@ public class Worker implements Runnable {
             processedLog.putSingleValue(rawLog.getValue("Start time", i), "Start time", i);
             processedLog.putSingleValue(rawLog.getValue("End time", i), "End time", i);
 
-            // 'Algorithm' for finding the desired output Activity
-            double[] place = gloveModel.getWordVector(rawLog.getValue("Place", i).toLowerCase());
-            double[] action = gloveModel.getWordVector("action");
-            double[] vector = VectorMath.add(place, action, gloveModel.getDimension());
+            double[] vector = determineActivityVector(i);
 
             String[] closestWords = gloveModel.findClosestWords(vector, 5);
             String newWord = closestWords[0];
 
             processedLog.putSingleValue(newWord, "Activity", i);
         }
+    }
+
+    /**
+     * 'Algorithm' for finding the desired output Activity
+     *
+     * @param row The row of the input log to process
+     * @return A vector representing what the output word should be for the Activity
+     */
+    private double[] determineActivityVector(int row) {
+        double[] place = gloveModel.getWordVector(rawLog.getValue("Place", row).toLowerCase());
+        double[] action = gloveModel.getWordVector("action");
+        double[] vector = VectorMath.add(place, action, gloveModel.getDimension());
+
+        return vector;
     }
 }

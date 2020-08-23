@@ -1,6 +1,7 @@
-package filehandler;
+package filehandler.model;
 
 import exceptions.ModelWritingException;
+import filehandler.ResourcePath;
 import filemodel.Model;
 
 import java.io.File;

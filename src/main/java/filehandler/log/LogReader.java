@@ -1,6 +1,7 @@
-package filehandler;
+package filehandler.log;
 
 import exceptions.InvalidLogException;
+import filehandler.ResourcePath;
 import filemodel.Log;
 
 import java.io.BufferedReader;

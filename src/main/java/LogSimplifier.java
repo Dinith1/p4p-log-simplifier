@@ -1,6 +1,9 @@
 import exceptions.InvalidLogException;
 import exceptions.ModelReadingException;
 import filehandler.*;
+import filehandler.log.LogReader;
+import filehandler.log.LogWriter;
+import filehandler.model.ModelReader;
 import filemodel.Log;
 import filemodel.Model;
 import glove.LogProcessor;

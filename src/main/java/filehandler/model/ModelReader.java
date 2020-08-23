@@ -1,6 +1,8 @@
-package filehandler;
+package filehandler.model;
 
 import exceptions.ModelReadingException;
+import filehandler.FileChecker;
+import filehandler.ResourcePath;
 import filemodel.Model;
 
 import java.io.*;

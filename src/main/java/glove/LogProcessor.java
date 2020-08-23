@@ -3,7 +3,6 @@ package glove;
 import filemodel.Log;
 import filemodel.Model;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -49,7 +48,7 @@ public class LogProcessor {
             }
         }
 
-        System.out.println("Starting log processing using " + numThreadsToUse + " threads...");
+        System.out.println("Starting log processing using " + numThreadsToUse + " thread(s)...");
 
         Log simplifiedLog = new Log(log.getNumRows());
         simplifiedLog.createHeader(log.getHeader(0));
@@ -61,7 +60,7 @@ public class LogProcessor {
         for (int i = 0; i < numThreadsToUse; i++) {
             int from = toFrom[i][0];
             int to = toFrom[i][1];
-            Runnable worker = new Worker(i, from, to, log, simplifiedLog, model);
+            Runnable worker = new LogWorker(i, from, to, log, simplifiedLog, model);
 
             executor.execute(worker);
         }

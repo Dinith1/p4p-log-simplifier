@@ -1,5 +1,6 @@
-package filehandler;
+package filehandler.log;
 
+import filehandler.ResourcePath;
 import filemodel.Log;
 
 import java.io.File;
@@ -28,11 +29,12 @@ public class LogWriter {
 
             if (newLog.createNewFile()) {
                 FileWriter fw = new FileWriter(path);
-                String header = log.getHeader(0) + "\t" + log.getHeader(1) + "\t" + log.getHeader(2) + "\n";
+                String header = getHeaderLine(log);
                 fw.write(header);
 
                 for (int i = 0; i < log.getNumRows(); i++) {
-                    fw.write(startTimes[i] + "\t" + endTimes[i] + "\t" + activities[i] + "\n");
+                    fw.write("\n");
+                    fw.write(startTimes[i] + "\t" + endTimes[i] + "\t" + activities[i]);
                 }
 
                 fw.close();
@@ -43,4 +45,19 @@ public class LogWriter {
             e.printStackTrace();
         }
     }
+
+    private String getHeaderLine(Log log) {
+        int numHeaders = log.getNumHeaders();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < numHeaders; i++) {
+            sb.append(log.getHeader(i));
+            if (i != numHeaders - 1) {
+                sb.append("\t");
+            }
+        }
+
+        return sb.toString();
+    }
+
 }

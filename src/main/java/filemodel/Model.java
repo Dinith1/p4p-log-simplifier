@@ -40,6 +40,7 @@ public class Model implements Serializable {
     }
 
     public String[] findClosestWords(double[] vector, int num) {
+        // use [num][0] for distance and [num][1] for the word representing that distance
         Object[][] topDistanceAndWord = new Object[num][2];
 
         for (int i = 0; i < num; i++) {

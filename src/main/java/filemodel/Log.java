@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Log {
+    private int numHeaders = 0;
     private final int numRows;
 
     private List<String> headers;
@@ -19,6 +20,7 @@ public class Log {
 
     public void createHeader(String header) {
         headers.add(header);
+        numHeaders++;
         data.put(header, new String[numRows]);
     }
 
@@ -36,6 +38,10 @@ public class Log {
 
     public void putSingleValue(String value, String header, int row) {
         data.get(header)[row] = value;
+    }
+
+    public int getNumHeaders() {
+        return numHeaders;
     }
 
     public int getNumRows() {
