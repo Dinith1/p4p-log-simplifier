@@ -13,15 +13,14 @@ public class ModelReader {
     public Model readModel(String model) throws ModelReadingException {
         System.out.println("Reading pre-trained GloVe model...");
 
-        FileChecker checker = new FileChecker();
-        if (checker.checkModelObjExists(model)) {
-            // Use the serialized/saved model
-            return readModelObj(model);
-        }
+        // UN-COMMENT TO USE SERIALIZED MODEL OBJECTS. THIS SEEMS TO BE SLOWER THAN READING THE FILE!
+//        FileChecker checker = new FileChecker();
+//        if (checker.checkModelObjExists(model)) {
+//            // Use the serialized/saved model
+//            return readModelObj(model);
+//        }
 
         return readModelFile(model);
-
-
     }
 
     private Model readModelObj(String model) throws ModelReadingException {

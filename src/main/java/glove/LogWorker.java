@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
+ * This class carries out the actual processing of the input log to produce the 'simplified' output.
  */
 public class LogWorker implements Runnable {
     private final int threadNum;
@@ -41,7 +41,7 @@ public class LogWorker implements Runnable {
 
             double[] vector = determineActivityVector(i);
 
-            String[] closestWords = gloveModel.findClosestWords(vector, 100);
+            String[] closestWords = gloveModel.findClosestWords(vector, 10);
             System.out.println(Arrays.toString(closestWords));
             String newWord = closestWords[0];
 
