@@ -4,6 +4,10 @@ import filemodel.Log;
 import filemodel.Model;
 import filemodel.VectorMath;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  */
@@ -37,7 +41,8 @@ public class LogWorker implements Runnable {
 
             double[] vector = determineActivityVector(i);
 
-            String[] closestWords = gloveModel.findClosestWords(vector, 5);
+            String[] closestWords = gloveModel.findClosestWords(vector, 100);
+            System.out.println(Arrays.toString(closestWords));
             String newWord = closestWords[0];
 
             processedLog.putSingleValue(newWord, "Activity", i);
@@ -45,16 +50,37 @@ public class LogWorker implements Runnable {
     }
 
     /**
-     * 'Algorithm' for finding the desired output Activity
+     * The algorithm for finding the desired output Activity.
      *
      * @param row The row of the input log to process
      * @return A vector representing what the output word should be for the Activity
      */
     private double[] determineActivityVector(int row) {
-        double[] place = gloveModel.getWordVector(rawLog.getValue("Place", row).toLowerCase());
-        double[] action = gloveModel.getWordVector("action");
-        double[] vector = VectorMath.add(place, action, gloveModel.getDimension());
+        int dimension = gloveModel.getDimension();
 
-        return vector;
+        String p = rawLog.getValue("Place", row);
+        p += (p.equals("living")) ? "room" : "";
+
+        List<double[]> vecs = getWordVectors(p, "action");
+
+//        double[] output = VectorMath.addAll(dimension, vecs);
+
+        double[] output = VectorMath.add(wordVector("Poland"), VectorMath.subtract(wordVector("Beijing"), wordVector("China"), dimension), dimension);
+
+        return output;
+    }
+
+    private List<double[]> getWordVectors(String... words) {
+        List<double[]> vecs = new ArrayList<>();
+
+        for (String w : words) {
+            vecs.add(wordVector(w));
+        }
+
+        return vecs;
+    }
+
+    private double[] wordVector(String word) {
+        return gloveModel.getWordVector(word.toLowerCase());
     }
 }
