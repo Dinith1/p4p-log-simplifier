@@ -1,12 +1,11 @@
 package glove;
 
+import exceptions.NoWordFoundException;
 import filemodel.Log;
 import filemodel.Model;
 import filemodel.VectorMath;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class carries out the actual processing of the input log to produce the 'simplified' output.
@@ -18,6 +17,7 @@ public class LogWorker implements Runnable {
     private final Log rawLog;
     private final Log processedLog;
     private final Model gloveModel;
+    private Set<String> wordsUsedInAlgorithm = new HashSet<>();
 
 
     public LogWorker(int thread, int from, int to, Log log, Log newLog, Model model) {
@@ -43,9 +43,13 @@ public class LogWorker implements Runnable {
 
             String[] closestWords = gloveModel.findClosestWords(vector, 10);
             System.out.println(Arrays.toString(closestWords));
-            String newWord = closestWords[0];
 
-            processedLog.putSingleValue(newWord, "Activity", i);
+            try {
+                String newWord = getClosestWord(closestWords);
+                processedLog.putSingleValue(newWord, "Activity", i);
+            } catch (NoWordFoundException e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
 
@@ -61,26 +65,37 @@ public class LogWorker implements Runnable {
         String p = rawLog.getValue("Place", row);
         p += (p.equals("living")) ? "room" : "";
 
-        List<double[]> vecs = getWordVectors(p, "action");
+//        List<double[]> vectors = getWordVectors(p, "action");
+//        double[] output = VectorMath.addAll(dimension, vectors);
 
-//        double[] output = VectorMath.addAll(dimension, vecs);
-
-        double[] output = VectorMath.add(wordVector("Poland"), VectorMath.subtract(wordVector("Beijing"), wordVector("China"), dimension), dimension);
+        double[] output = VectorMath.add(wordVector(p), VectorMath.subtract(wordVector("Eating"), wordVector("Kitchen"), dimension), dimension);
 
         return output;
     }
 
     private List<double[]> getWordVectors(String... words) {
-        List<double[]> vecs = new ArrayList<>();
+        List<double[]> vectors = new ArrayList<>();
 
         for (String w : words) {
-            vecs.add(wordVector(w));
+            vectors.add(wordVector(w));
         }
 
-        return vecs;
+        return vectors;
     }
 
     private double[] wordVector(String word) {
+        wordsUsedInAlgorithm.add(word.toLowerCase());
+
         return gloveModel.getWordVector(word.toLowerCase());
+    }
+
+    private String getClosestWord(String[] words) throws NoWordFoundException {
+        for (String w : words) {
+            if (!wordsUsedInAlgorithm.contains(w)) {
+                return w;
+            }
+        }
+
+        throw new NoWordFoundException("No appropriate word found from list: " + Arrays.toString(words));
     }
 }
